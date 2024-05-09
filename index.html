@@ -45,10 +45,28 @@
             <li><a href="https://blog.csdn.net/weixin_55982578?spm=1010.2135.3001.5421" target="_blank">CSDN</a></li>
             <li><a href="https://www.zhihu.com/people/ni-dian-zhi-wo-zhi">知乎</a></li>
         </ul>
+        <h2>我的最新 CSDN 文章</h2>
+        <div id="feed"></div>
     </div>
     <!-- 引入 Bootstrap JS 和 jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- 引入 rss-parser 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+    <script>
+        let parser = new RSSParser();
+        const feedUrl = 'https://rss.csdn.net/weixin_55982578/rss/map?spm=1001.2014.3001.5494';
+        
+        parser.parseURL(feedUrl, function(err, feed) {
+            if (err) throw err;
+            let feedHtml = '';
+            feed.items.forEach(item => {
+                feedHtml += `<li><a href="${item.link}" target="_blank">${item.title}</a> - 发布日期: ${item.pubDate}</li>`;
+            });
+            document.getElementById('feed').innerHTML = `<ul>${feedHtml}</ul>`;
+        });
+    </script>
 </body>
 </html>
